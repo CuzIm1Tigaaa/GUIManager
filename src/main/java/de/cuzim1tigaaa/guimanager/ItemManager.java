@@ -270,6 +270,7 @@ public class ItemManager {
 		if(loreItems != null && loreItems.length > 0) {
 			List<String> lore = new ArrayList<>();
 			Collections.addAll(lore, loreItems);
+			lore.removeIf(Objects::isNull);
 			meta.setLore(lore);
 		}
 
