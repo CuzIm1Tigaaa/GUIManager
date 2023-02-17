@@ -195,7 +195,7 @@ public class ItemManager {
 	public static ItemStack getCustomItem(final Material material, boolean enchanted, final String displayName, final String... loreItems) {
 		ItemStack custom = new ItemStack(material);
 		custom = addNameLore(custom, displayName, loreItems);
-		custom = getEnchantedItem(custom);
+		if(enchanted) custom = getEnchantedItem(custom);
 		return custom;
 	}
 
