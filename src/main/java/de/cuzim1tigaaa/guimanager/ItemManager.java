@@ -30,10 +30,10 @@ public class ItemManager {
 	 * @param next whether the next item is needed
 	 * @param last whether the last item is needed
 	 */
-	public static void setNavigationItems(Inventory inventory, boolean next, boolean last) {
-		inventory.setItem(inventory.getSize() - 5, getNavigationRefresh());
-		if(next) inventory.setItem(inventory.getSize() - 1, getNavigationNext());
+	public static void setNavigationItems(Inventory inventory, boolean last, boolean reload, boolean next) {
 		if(last) inventory.setItem(inventory.getSize() - 9, getNavigationLast());
+		if(reload) inventory.setItem(inventory.getSize() - 5, getNavigationRefresh());
+		if(next) inventory.setItem(inventory.getSize() - 1, getNavigationNext());
 	}
 	/**
 	 * Get the navigation item to go to the next page
