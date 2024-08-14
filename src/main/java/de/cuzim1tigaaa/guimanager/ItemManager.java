@@ -1,14 +1,11 @@
 package de.cuzim1tigaaa.guimanager;
 
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.*;
 
-import java.lang.reflect.Field;
 import java.util.*;
 
 /**
@@ -21,6 +18,17 @@ public class ItemManager {
 	 */
 	public enum Type {
 		HELMET, CHESTPLATE, LEGGINGS, BOOTS
+	}
+
+
+	/**
+	 * Calculate the amount of pages of a GUI
+	 * @param entries The amount of entries, for example how many teams are in a list
+	 * @param perPage The amount of entries per page that should be displayed
+	 * @return Returns the amount of pages needed to display all entries
+	 */
+	public static int calcMaxPage(int entries, int perPage) {
+		return entries / perPage + ((entries % perPage == 0) ? 0 : 1);
 	}
 
 	/**
@@ -145,6 +153,24 @@ public class ItemManager {
 		return getAmountItem(inventory, itemStack, amount);
 	}
 
+
+	/**
+	 * Get a custom head as ItemStack
+	 *
+	 * @param head          The enum of the head
+	 * @param displayName   The displayName the head should have
+	 * @param loreItems     The lore the head should have, every String is a new line
+	 * @return              Returns the itemStack skull with the custom texture
+	 * @see CustomHead
+	 */
+	public static ItemStack getCustomHead(final CustomHead head, final String displayName, boolean useAsGPName, final String... loreItems) {
+		ItemStack customHead = new ItemStack(Material.PLAYER_HEAD, 1);
+		SkullMeta customHeadMeta = (SkullMeta) customHead.getItemMeta();
+		customHeadMeta.setOwnerProfile(CustomHead.getHead(head));
+		customHead.setItemMeta(customHeadMeta);
+		customHead = addNameLore(customHead, useAsGPName ? null : displayName, loreItems);
+		return customHead;
+	}
 	/**
 	 * Get a custom head as ItemStack
 	 *
@@ -155,21 +181,7 @@ public class ItemManager {
 	 * @see CustomHead
 	 */
 	public static ItemStack getCustomHead(final CustomHead head, final String displayName, final String... loreItems) {
-		ItemStack customHead = new ItemStack(Material.PLAYER_HEAD, 1);
-		SkullMeta customHeadMeta = (SkullMeta) customHead.getItemMeta();
-		GameProfile profile = new GameProfile(UUID.randomUUID(), null);
-		profile.getProperties().put("textures", new Property("textures", head.getID()));
-
-		try {
-			Field profileField = customHeadMeta.getClass().getDeclaredField("profile");
-			profileField.setAccessible(true);
-			profileField.set(customHeadMeta, profile);
-		}catch(NoSuchFieldException | IllegalAccessException e) {
-			e.printStackTrace();
-		}
-		customHead.setItemMeta(customHeadMeta);
-		customHead = addNameLore(customHead, displayName, loreItems);
-		return customHead;
+		return getCustomHead(head, displayName, false, loreItems);
 	}
 
 	/**
@@ -250,7 +262,7 @@ public class ItemManager {
 	 */
 	public static ItemStack getEnchantedItem(final ItemStack itemStack) {
 		ItemMeta meta = itemStack.getItemMeta();
-		meta.addEnchant(Enchantment.DURABILITY, 1, false);
+		meta.addEnchant(Enchantment.UNBREAKING, 1, false);
 		meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 		itemStack.setItemMeta(meta);
 		return itemStack;
