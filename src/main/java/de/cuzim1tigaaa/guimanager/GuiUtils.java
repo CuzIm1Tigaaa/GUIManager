@@ -1,5 +1,6 @@
 package de.cuzim1tigaaa.guimanager;
 
+import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 
 /**
@@ -58,5 +59,20 @@ public class GuiUtils {
                 light = false;
             inventory.setItem(i, itemUtils.getPlaceholder(light));
         }
+    }
+
+    public Integer nextPage(Inventory inventory) {
+        int slot = inventory.getSize();
+
+        if(inventory.getItem(slot - 1).getType() == Material.PLAYER_HEAD)
+            return 1;
+
+        if(inventory.getItem(slot - 5).getType() == Material.PLAYER_HEAD)
+            return 0;
+
+        if(inventory.getItem(slot - 9).getType() == Material.PLAYER_HEAD)
+            return -1;
+
+        return null;
     }
 }

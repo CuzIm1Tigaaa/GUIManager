@@ -1,5 +1,6 @@
 package de.cuzim1tigaaa.guimanager;
 
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.profile.PlayerProfile;
@@ -10,6 +11,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
+@Getter
 public class GuiManager {
 
     private final JavaPlugin plugin;
@@ -48,21 +50,5 @@ public class GuiManager {
             }
             playerProfiles.put(uuid, profile);
         });
-    }
-
-    public JavaPlugin getPlugin() {
-        return plugin;
-    }
-
-    public GuiUtils getGuiUtils() {
-        return guiUtils;
-    }
-
-    public ItemUtils getItemUtils() {
-        return itemUtils;
-    }
-
-    public Map<UUID, PlayerProfile> getPlayerProfiles() {
-        return playerProfiles;
     }
 }
