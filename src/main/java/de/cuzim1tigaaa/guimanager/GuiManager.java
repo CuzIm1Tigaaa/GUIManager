@@ -14,11 +14,9 @@ import java.util.concurrent.ExecutionException;
 @Getter
 public class GuiManager {
 
+    @Getter
+    private static final Map<UUID, PlayerProfile> playerProfiles = new HashMap<>();
     private final JavaPlugin plugin;
-    private final GuiUtils guiUtils;
-    private final ItemUtils itemUtils;
-
-    private final Map<UUID, PlayerProfile> playerProfiles = new HashMap<>();
 
     public GuiManager(JavaPlugin plugin) {
         this(plugin, true);
@@ -26,8 +24,6 @@ public class GuiManager {
 
     public GuiManager(JavaPlugin plugin, boolean updatePlayerCache) {
         this.plugin = plugin;
-        this.guiUtils = new GuiUtils(this);
-        this.itemUtils = new ItemUtils(this);
 
         if(updatePlayerCache)
             updatePlayerCache();

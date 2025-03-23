@@ -1,9 +1,10 @@
 package de.cuzim1tigaaa.guimanager.gui;
 
-import de.cuzim1tigaaa.guimanager.GUIItem;
+import de.cuzim1tigaaa.guimanager.GuiItem;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 
 import java.util.List;
 
@@ -11,9 +12,11 @@ import java.util.List;
 @Setter
 public abstract class MultiPageGUI<T> extends GUI {
 
-    protected List<T> items;
+	protected List<T> items;
+	protected int entriesPerPage;
 
-    public MultiPageGUI(int size, GUIItem guiItem, int page) {
-        super(size, guiItem, page);
-    }
+	public MultiPageGUI(int size, int page, int entriesPerPage) {
+		super(size, page);
+		this.entriesPerPage = entriesPerPage;
+	}
 }

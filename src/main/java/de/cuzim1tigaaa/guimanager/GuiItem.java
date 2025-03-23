@@ -7,7 +7,7 @@ import org.bukkit.inventory.Inventory;
  * Can store all types of objects for executing different tasks
  * and storing information across multiple pages and different guis
  */
-public record GUIItem(Inventory inventory, int page, Object... objects) {
+public record GuiItem(Inventory inventory, int page, Object... objects) {
 
     public Object getObject(int index) {
         return objects[index];

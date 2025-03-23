@@ -8,19 +8,13 @@ import org.bukkit.inventory.Inventory;
  */
 public class GuiUtils {
 
-    private final ItemUtils itemUtils;
-
-    public GuiUtils(GuiManager guiManager) {
-        this.itemUtils = guiManager.getItemUtils();
-    }
-
     /**
      * Calculate the amount of pages a gui will have
      * @param entries The amount of entries, for example how many teams are in a list
      * @param perPage The amount of entries per page that should be displayed
      * @return Returns the amount of pages needed to display all entries
      */
-    public int calcMaxPage(int entries, int perPage) {
+    public static int calcMaxPage(int entries, int perPage) {
         return entries / perPage + ((entries % perPage == 0) ? 0 : 1);
     }
 
@@ -31,13 +25,13 @@ public class GuiUtils {
      * @param reload whether the reload item is needed
      * @param next whether the next item is needed
      */
-    public void setNavigationItems(Inventory inventory, boolean last, boolean reload, boolean next) {
+    public static void setNavigationItems(Inventory inventory, boolean last, boolean reload, boolean next) {
         if(last)
-            inventory.setItem(inventory.getSize() - 9, itemUtils.getNavigationLast());
+            inventory.setItem(inventory.getSize() - 9, ItemUtils.getNavigationLast());
         if(reload)
-            inventory.setItem(inventory.getSize() - 5, itemUtils.getNavigationRefresh());
+            inventory.setItem(inventory.getSize() - 5, ItemUtils.getNavigationRefresh());
         if(next)
-            inventory.setItem(inventory.getSize() - 1, itemUtils.getNavigationNext());
+            inventory.setItem(inventory.getSize() - 1, ItemUtils.getNavigationNext());
     }
 
     /**
@@ -48,20 +42,20 @@ public class GuiUtils {
      *
      * @param inventory     The inventory the placeholders should go into
      */
-    public void setPlaceholders(Inventory inventory) {
+    public static void setPlaceholders(Inventory inventory) {
         int slots = inventory.getSize();
 
-        boolean light = true;
         for(int i = 0; i < slots; i++) {
+            boolean light = true;
             if(i < 9 || i > slots - 9)
                 light = false;
             else if(i % 9 == 0 || (i + 1) % 9 == 0)
                 light = false;
-            inventory.setItem(i, itemUtils.getPlaceholder(light));
+            inventory.setItem(i, ItemUtils.getPlaceholder(light));
         }
     }
 
-    public Integer nextPage(Inventory inventory) {
+    public static Integer nextPage(Inventory inventory) {
         int slot = inventory.getSize();
 
         if(inventory.getItem(slot - 1).getType() == Material.PLAYER_HEAD)
