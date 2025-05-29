@@ -61,6 +61,8 @@ public abstract class GUI {
 	}
 
 	public void switchPage(int newPage) {
+		if(this.guiItem == null)
+			return;
 		this.page = newPage;
 		setItems();
 	}

@@ -1,22 +1,12 @@
 package de.cuzim1tigaaa.guimanager;
 
-import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Color;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
+import de.cuzim1tigaaa.colorlib.ColorLib;
+import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemFlag;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
-import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.inventory.*;
+import org.bukkit.inventory.meta.*;
 
-import javax.annotation.Nonnull;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * This class provides some useful methods for itemstacks and their metadata
@@ -254,7 +244,7 @@ public class ItemUtils {
      * @return Returns the item as enchanted ItemStack
      */
     public static ItemStack addEnchantments(final ItemStack itemStack) {
-        return addEnchantments(itemStack, Collections.singletonMap(Enchantment.UNBREAKING, 1), false);
+        return addEnchantments(itemStack, Collections.singletonMap(Enchantment.UNBREAKING, 1), true);
     }
 
     /**
@@ -285,12 +275,12 @@ public class ItemUtils {
     public static ItemStack addNameLore(final ItemStack itemStack, final String displayName, final String... loreItems) {
         ItemMeta meta = itemStack.getItemMeta();
         if(displayName != null)
-            meta.setDisplayName(format(displayName));
+            meta.setDisplayName(ColorLib.format(displayName));
 
         if(loreItems != null && loreItems.length > 0) {
             List<String> lore = new ArrayList<>();
             Arrays.stream(loreItems).filter(Objects::nonNull)
-                    .forEach(loreItem -> lore.add(format(loreItem)));
+                    .forEach(loreItem -> lore.add(ColorLib.format(loreItem)));
             meta.setLore(lore);
         }
 
@@ -298,22 +288,22 @@ public class ItemUtils {
         return itemStack;
     }
 
-
-    private static final Pattern pattern = Pattern.compile("#[a-fA-F0-9]{6}");
-
     /**
-     * Format a string with hex and chat color codes
-     * @param string The string to format
-     * @return Returns the same string but with formatted colors
+     * Translates the colors of the displayName and lore of an ItemStack
+     * @param itemStack   The ItemStack to modify
+     * @return Returns the modified ItemStack
      */
-    static String format(@Nonnull String string) {
-        Matcher matcher = pattern.matcher(string);
-        while(matcher.find()) {
-            String color = string.substring(matcher.start(), matcher.end());
-            string = string.replace(color, ChatColor.of(color) + "");
-            matcher = pattern.matcher(string);
-        }
-        return ChatColor.translateAlternateColorCodes('&', string);
-    }
+    public static ItemStack translateNameLore(final ItemStack itemStack) {
+        ItemMeta meta = itemStack.getItemMeta();
+        if(meta.hasDisplayName())
+            meta.setDisplayName(ColorLib.format(meta.getDisplayName()));
 
+        if(meta.hasLore()) {
+            List<String> lore = new ArrayList<>();
+            meta.getLore().forEach(loreItem -> lore.add(ColorLib.format(loreItem)));
+            meta.setLore(lore);
+        }
+        itemStack.setItemMeta(meta);
+        return itemStack;
+    }
 }

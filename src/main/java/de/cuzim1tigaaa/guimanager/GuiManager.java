@@ -33,6 +33,8 @@ public class GuiManager {
         Arrays.stream(Bukkit.getOfflinePlayers()).forEach(player -> {
             if(!player.isOnline() && !player.hasPlayedBefore())
                 return;
+            if(player.getName().length() > 16)
+                return;
 
             UUID uuid = player.getUniqueId();
             PlayerProfile profile = Bukkit.createPlayerProfile(uuid, player.getName());
