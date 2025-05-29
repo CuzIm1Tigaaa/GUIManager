@@ -4,9 +4,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>de.cuzim1tigaaa.guimanager</groupId>
+    <groupId>io.github.cuzim1tigaaa</groupId>
     <artifactId>guimanager</artifactId>
-    <version>5.0.29</version>
+    <version>6.0</version>
+
+    <name>GUIManager</name>
+    <description>A java library with the goal to easily create GUIs in minecraft using spigot api</description>
     <url>https://github.com/CuzIm1Tigaaa/GUIManager</url>
 
     <issueManagement>
@@ -42,14 +45,6 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
-    <distributionManagement>
-        <repository>
-            <id>github</id>
-            <name>GitHub Packages</name>
-            <url>https://maven.pkg.github.com/CuzIm1Tigaaa/guimanager</url>
-        </repository>
-    </distributionManagement>
 
     <profiles>
         <profile>
@@ -141,17 +136,9 @@
         </dependency>
 
         <dependency>
-            <groupId>de.cuzim1tigaaa.colorlib</groupId>
+            <groupId>io.github.cuzim1tigaaa</groupId>
             <artifactId>colorlib</artifactId>
-            <version>2.6-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.mockbukkit.mockbukkit</groupId>
-            <artifactId>mockbukkit-v1.21</artifactId>
-            <version>4.34.1</version>
-            <scope>test</scope>
+            <version>3.0</version>
         </dependency>
 
         <dependency>
