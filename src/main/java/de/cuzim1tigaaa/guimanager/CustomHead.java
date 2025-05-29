@@ -1,5 +1,6 @@
 package de.cuzim1tigaaa.guimanager;
 
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.profile.PlayerProfile;
 import org.bukkit.profile.PlayerTextures;
@@ -10,6 +11,7 @@ import java.util.UUID;
 /**
  * This enum allows you to add custom heads
  */
+@Getter
 public class CustomHead {
 
 	public static CustomHead BLACK_ARROW_LEFT = new CustomHead(
@@ -24,9 +26,20 @@ public class CustomHead {
 
 	/**
 	 * The ID of the Head
-	 */
+     * -- GETTER --
+     *  Getter method for the whole ID
+     *
+     * @return Returns the ID of the head as String
+
+     */
 	private final String ID;
-	private final String URL;
+    /**
+     * -- GETTER --
+     *  Getter method for the URL
+     *
+     * @return Returns the URL of the head as String
+     */
+    private final String URL;
 
 	/**
 	 * The constructor needs the ID of this head
@@ -41,25 +54,7 @@ public class CustomHead {
 		this.URL = "http://textures.minecraft.net/texture/" + url;
 	}
 
-	/**
-	 * Getter method for the whole ID
-	 *
-	 * @return Returns the ID of the head as String
-	 */
-	public String getID() {
-		return ID;
-	}
-
-	/**
-	 * Getter method for the URL
-	 *
-	 * @return Returns the URL of the head as String
-	 */
-	public String getURL() {
-		return URL;
-	}
-
-	/**
+    /**
 	 * This method returns the playerprofile of a head
 	 * @param head The head you want to get
 	 * @return Returns the playerprofile of the head

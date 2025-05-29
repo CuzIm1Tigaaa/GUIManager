@@ -1,33 +1,17 @@
 package de.cuzim1tigaaa.guimanager;
 
-import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Color;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
+import de.cuzim1tigaaa.colorlib.ColorLib;
+import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemFlag;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
-import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.inventory.*;
+import org.bukkit.inventory.meta.*;
 
-import javax.annotation.Nonnull;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * This class provides some useful methods for itemstacks and their metadata
  */
 public class ItemUtils {
-
-    private final GuiManager guiManager;
-
-    public ItemUtils(GuiManager guiManager) {
-        this.guiManager = guiManager;
-    }
 
     /**
      * Get the navigation item to go to the next page
@@ -36,7 +20,7 @@ public class ItemUtils {
      * @return Returns the itemStack of the navigation item
      * @see CustomHead
      */
-    public ItemStack getNavigationNext() {
+    public static ItemStack getNavigationNext() {
         return getCustomHead(CustomHead.BLACK_ARROW_RIGHT,
                 "&a&lWeiter",
                 "&7Klicke hier, um eine",
@@ -50,7 +34,7 @@ public class ItemUtils {
      * @return Returns the itemStack of the navigation item
      * @see CustomHead
      */
-    public ItemStack getNavigationLast() {
+    public static ItemStack getNavigationLast() {
         return getCustomHead(CustomHead.BLACK_ARROW_LEFT,
                 "&c&lZurück",
                 "&7Klicke hier, um eine",
@@ -64,7 +48,7 @@ public class ItemUtils {
      * @return Returns the itemStack of the refresh item
      * @see CustomHead
      */
-    public ItemStack getNavigationRefresh() {
+    public static ItemStack getNavigationRefresh() {
         return getCustomHead(CustomHead.BLACK_EXCLAMATION,
                 "&9&lReload",
                 "&7Klicke hier, um diese", "&7Seite neu zu laden");
@@ -77,17 +61,9 @@ public class ItemUtils {
      *              (Black or Dark_Gray Glass pane)
      * @return Returns the itemStack of the placeholder
      */
-    public ItemStack getPlaceholder(boolean light) {
-        ItemStack placeholder;
-        if(light) placeholder = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
-        else placeholder = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
-        ItemMeta placeholderMeta = placeholder.getItemMeta();
-        placeholderMeta.setDisplayName("");
-        placeholderMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS,
-                ItemFlag.HIDE_ADDITIONAL_TOOLTIP,
-                ItemFlag.HIDE_ATTRIBUTES);
-        placeholder.setItemMeta(placeholderMeta);
-        return placeholder;
+    public static ItemStack getPlaceholder(boolean light) {
+        Material material = light ? Material.GRAY_STAINED_GLASS_PANE : Material.BLACK_STAINED_GLASS_PANE;
+	    return getCustomItem(material, "&c");
     }
 
     /**
@@ -99,7 +75,7 @@ public class ItemUtils {
      * @param amount    The stack size of the itemStack
      * @return Return the itemStack with the new stack size
      */
-    public ItemStack getAmountItem(final Inventory inventory, final ItemStack itemStack, final int amount) {
+    public static ItemStack getAmountItem(final Inventory inventory, final ItemStack itemStack, final int amount) {
         inventory.setMaxStackSize(Math.max(amount, inventory.getMaxStackSize()));
         itemStack.setAmount(amount);
         return itemStack;
@@ -113,14 +89,14 @@ public class ItemUtils {
      * @param loreItems The lore the head should have, every String is a new line
      * @return Returns the itemStack skull with the players skin texture
      */
-    public ItemStack getPlayerHead(final OfflinePlayer player, final String display, final String... loreItems) {
+    public static ItemStack getPlayerHead(final OfflinePlayer player, final String display, final String... loreItems) {
         ItemStack itemStack = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta meta = (SkullMeta) itemStack.getItemMeta();
 
         if(player.isOnline())
             meta.setOwningPlayer(player);
         else
-            meta.setOwnerProfile(guiManager.getPlayerProfiles().get(player.getUniqueId()));
+            meta.setOwnerProfile(GuiManager.getPlayerProfiles().get(player.getUniqueId()));
 
         itemStack.setItemMeta(meta);
         itemStack = addNameLore(itemStack, display, loreItems);
@@ -137,7 +113,7 @@ public class ItemUtils {
      * @param loreItems The lore the head should have, every String is a new line
      * @return Returns the itemStack skull with the players skin texture and a custom stack size
      */
-    public ItemStack getPlayerHead(final Inventory inventory, final OfflinePlayer player, final int amount, final String display, final String... loreItems) {
+    public static ItemStack getPlayerHead(final Inventory inventory, final OfflinePlayer player, final int amount, final String display, final String... loreItems) {
         ItemStack itemStack = getPlayerHead(player, display, loreItems);
         return getAmountItem(inventory, itemStack, amount);
     }
@@ -153,7 +129,7 @@ public class ItemUtils {
      * @return Returns the itemStack skull with the custom texture
      * @see CustomHead
      */
-    public ItemStack getCustomHead(final CustomHead head, boolean customDisplayName, final String displayName, final String... loreItems) {
+    public static ItemStack getCustomHead(final CustomHead head, boolean customDisplayName, final String displayName, final String... loreItems) {
         ItemStack customHead = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta customHeadMeta = (SkullMeta) customHead.getItemMeta();
         customHeadMeta.setOwnerProfile(CustomHead.getHead(head));
@@ -184,8 +160,8 @@ public class ItemUtils {
      * @return Returns the itemStack skull with the custom texture
      * @see CustomHead
      */
-    public ItemStack getCustomHead(final CustomHead head, final String displayName, final String... loreItems) {
-        return getCustomHead(head, false, displayName, loreItems);
+    public static ItemStack getCustomHead(final CustomHead head, final String displayName, final String... loreItems) {
+        return getCustomHead(head, true, displayName, loreItems);
     }
 
     /**
@@ -196,7 +172,7 @@ public class ItemUtils {
      * @param loreItems   The lore the item should have, every String is a new line
      * @return Returns the item as ItemStack
      */
-    public ItemStack getCustomItem(final Material material, final String displayName, final String... loreItems) {
+    public static ItemStack getCustomItem(final Material material, final String displayName, final String... loreItems) {
         return getCustomItem(material, false, displayName, loreItems);
     }
 
@@ -209,7 +185,7 @@ public class ItemUtils {
      * @param loreItems   The lore the item should have, every String is a new line
      * @return Returns the item as ItemStack
      */
-    public ItemStack getCustomItem(final Material material, boolean enchanted, final String displayName, final String... loreItems) {
+    public static ItemStack getCustomItem(final Material material, boolean enchanted, final String displayName, final String... loreItems) {
         ItemStack custom = new ItemStack(material);
         custom = addNameLore(custom, displayName, loreItems);
         if(enchanted) custom = addEnchantments(custom);
@@ -227,7 +203,7 @@ public class ItemUtils {
      * @see EquipmentSlot
      * @see Color
      */
-    public ItemStack getColoredLeatherArmor(final EquipmentSlot slot, final Color color, final String displayName, final String... loreItems) {
+    public static ItemStack getColoredLeatherArmor(final EquipmentSlot slot, final Color color, final String displayName, final String... loreItems) {
         return getColoredLeatherArmor(slot, color, false, displayName, loreItems);
     }
 
@@ -243,7 +219,7 @@ public class ItemUtils {
      * @see EquipmentSlot
      * @see Color
      */
-    public ItemStack getColoredLeatherArmor(final EquipmentSlot slot, final Color color, boolean enchanted, final String displayName, final String... loreItems) {
+    public static ItemStack getColoredLeatherArmor(final EquipmentSlot slot, final Color color, boolean enchanted, final String displayName, final String... loreItems) {
         ItemStack leatherArmor = switch(slot) {
             case CHEST -> new ItemStack(Material.LEATHER_CHESTPLATE);
             case LEGS -> new ItemStack(Material.LEATHER_LEGGINGS);
@@ -267,8 +243,8 @@ public class ItemUtils {
      * @param itemStack The ItemStack to enchant
      * @return Returns the item as enchanted ItemStack
      */
-    public ItemStack addEnchantments(final ItemStack itemStack) {
-        return addEnchantments(itemStack, Collections.singletonMap(Enchantment.UNBREAKING, 1), false);
+    public static ItemStack addEnchantments(final ItemStack itemStack) {
+        return addEnchantments(itemStack, Collections.singletonMap(Enchantment.UNBREAKING, 1), true);
     }
 
     /**
@@ -278,7 +254,7 @@ public class ItemUtils {
      * @param hideEnchantments If the enchantments should be hidden, useful if just needed visually
      * @return Returns the given item with the specified enchantments
      */
-    public ItemStack addEnchantments(final ItemStack itemStack, Map<Enchantment, Integer> enchantments, boolean hideEnchantments) {
+    public static ItemStack addEnchantments(final ItemStack itemStack, Map<Enchantment, Integer> enchantments, boolean hideEnchantments) {
         ItemMeta meta = itemStack.getItemMeta();
         enchantments.forEach((enchantment, integer) ->
                 meta.addEnchant(enchantment, integer, false));
@@ -296,14 +272,15 @@ public class ItemUtils {
      * @param loreItems   The lore the item should have, every String is a new line, nulls get removed
      * @return Returns the modified ItemStack
      */
-    public ItemStack addNameLore(final ItemStack itemStack, final String displayName, final String... loreItems) {
+    public static ItemStack addNameLore(final ItemStack itemStack, final String displayName, final String... loreItems) {
         ItemMeta meta = itemStack.getItemMeta();
-        meta.setDisplayName(format(displayName));
+        if(displayName != null)
+            meta.setDisplayName(ColorLib.format(displayName));
 
         if(loreItems != null && loreItems.length > 0) {
             List<String> lore = new ArrayList<>();
             Arrays.stream(loreItems).filter(Objects::nonNull)
-                    .forEach(loreItem -> lore.add(format(loreItem)));
+                    .forEach(loreItem -> lore.add(ColorLib.format(loreItem)));
             meta.setLore(lore);
         }
 
@@ -311,22 +288,22 @@ public class ItemUtils {
         return itemStack;
     }
 
-
-    private final Pattern pattern = Pattern.compile("#[a-fA-F0-9]{6}");
-
     /**
-     * Format a string with hex and chat color codes
-     * @param string The string to format
-     * @return Returns the same string but with formatted colors
+     * Translates the colors of the displayName and lore of an ItemStack
+     * @param itemStack   The ItemStack to modify
+     * @return Returns the modified ItemStack
      */
-    private String format(@Nonnull String string) {
-        Matcher matcher = pattern.matcher(string);
-        while(matcher.find()) {
-            String color = string.substring(matcher.start(), matcher.end());
-            string = string.replace(color, ChatColor.of(color) + "");
-            matcher = pattern.matcher(string);
-        }
-        return ChatColor.translateAlternateColorCodes('&', string);
-    }
+    public static ItemStack translateNameLore(final ItemStack itemStack) {
+        ItemMeta meta = itemStack.getItemMeta();
+        if(meta.hasDisplayName())
+            meta.setDisplayName(ColorLib.format(meta.getDisplayName()));
 
+        if(meta.hasLore()) {
+            List<String> lore = new ArrayList<>();
+            meta.getLore().forEach(loreItem -> lore.add(ColorLib.format(loreItem)));
+            meta.setLore(lore);
+        }
+        itemStack.setItemMeta(meta);
+        return itemStack;
+    }
 }
