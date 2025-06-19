@@ -1,9 +1,7 @@
 package de.cuzim1tigaaa.guimanager;
 
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Color;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
@@ -268,7 +266,8 @@ public class ItemUtils {
      * @return Returns the item as enchanted ItemStack
      */
     public ItemStack addEnchantments(final ItemStack itemStack) {
-        return addEnchantments(itemStack, Collections.singletonMap(Enchantment.UNBREAKING, 1), false);
+        Enchantment enchantment = Registry.ENCHANTMENT.get(NamespacedKey.minecraft("unbreaking"));
+        return addEnchantments(itemStack, Collections.singletonMap(enchantment, 1), true);
     }
 
     /**
