@@ -6,7 +6,7 @@
 
     <groupId>io.github.cuzim1tigaaa</groupId>
     <artifactId>guimanager</artifactId>
-    <version>6.0</version>
+    <version>6.1</version>
 
     <name>GUIManager</name>
     <description>A java library with the goal to easily create GUIs in minecraft using spigot api</description>
