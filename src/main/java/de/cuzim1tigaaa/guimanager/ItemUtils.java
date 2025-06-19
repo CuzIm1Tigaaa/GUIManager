@@ -244,7 +244,8 @@ public class ItemUtils {
      * @return Returns the item as enchanted ItemStack
      */
     public static ItemStack addEnchantments(final ItemStack itemStack) {
-        return addEnchantments(itemStack, Collections.singletonMap(Enchantment.UNBREAKING, 1), true);
+        Enchantment enchantment = Registry.ENCHANTMENT.get(NamespacedKey.minecraft("unbreaking"));
+        return addEnchantments(itemStack, Collections.singletonMap(enchantment, 1), true);
     }
 
     /**
